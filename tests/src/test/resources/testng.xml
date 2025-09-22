@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="UI Suite" verbose="1" parallel="classes" thread-count="4">
+    <listeners>
+        <listener class-name="com.example.autotests.tests.support.LogAndArtifactsListener"/>
+    </listeners>
+    <test name="UI Tests">
+        <packages>
+            <package name="com.example.autotests.tests.ui"/>
+        </packages>
+    </test>
+</suite>
