@@ -1,14 +1,11 @@
 plugins {
     kotlin("jvm")
     id("io.ebean")
-    kotlin("kapt")
 }
 
 dependencies {
     implementation(kotlin("stdlib"))
     implementation("io.ebean:ebean:14.5.0")
-    implementation("io.ebean:ebean-querybean:14.5.0")
-    kapt("io.ebean:kotlin-querybean-generator:14.5.0")
     implementation("com.zaxxer:HikariCP:5.1.0")
     implementation("com.h2database:h2:2.3.232")
     implementation("org.slf4j:slf4j-api:2.0.13")
