@@ -7,7 +7,7 @@ import com.codeborne.selenide.SelenideElement
 import com.google.inject.Inject
 
 class GoogleHomePage @Inject constructor() {
-    private val searchButton: SelenideElement = `$`(\"input[name='btnK']\")
+    private val searchButton: SelenideElement = `$`("input[name='btnK']")
 
     fun openUrl(url: String): GoogleHomePage {
         open(url)

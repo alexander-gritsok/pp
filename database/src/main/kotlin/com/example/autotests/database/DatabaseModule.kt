@@ -18,10 +18,10 @@ class DatabaseModule : AbstractModule() {
             password = System.getProperty("db.password", "")
         }
         val config = DatabaseConfig().apply {
-            name = "default"
-            this.dataSource = dataSource
-            isDdlGenerate = false
-            isDdlRun = false
+            it.name("default")
+            it.dataSource(dataSource)
+            it.ddlGenerate(false)
+            it.ddlRun(false)
         }
         return DatabaseFactory.create(config)
     }
