@@ -1,5 +1,7 @@
 plugins {
     kotlin("jvm")
+    kotlin("kapt")
+    `java-library`
 }
 
 dependencies {
@@ -11,6 +13,7 @@ dependencies {
     testImplementation("org.testng:testng:7.10.2")
     testImplementation("com.codeborne:selenide:7.5.1")
     testImplementation("com.google.inject:guice:7.0.0")
+    testImplementation("com.google.inject:guice:7.0.0")
 
     // Kotlin scripting for KTS data provider
     testImplementation("org.jetbrains.kotlin:kotlin-scripting-jvm:2.0.20")
@@ -19,6 +22,10 @@ dependencies {
     testImplementation("org.apache.logging.log4j:log4j-api:2.24.2")
     testRuntimeOnly("org.apache.logging.log4j:log4j-core:2.24.2")
     testRuntimeOnly("org.apache.logging.log4j:log4j-slf4j2-impl:2.24.2")
+
+    kapt("io.ebean:kotlin-querybean-generator:17.1.0")
+    testImplementation("io.ebean:ebean-test:17.1.0")
+    implementation("org.postgresql:postgresql:42.7.8")
 }
 
 tasks.test {

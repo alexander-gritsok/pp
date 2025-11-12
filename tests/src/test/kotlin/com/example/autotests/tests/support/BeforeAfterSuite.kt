@@ -1,5 +1,6 @@
 package com.example.autotests.tests.support
 
+import com.codeborne.selenide.Selenide
 import com.codeborne.selenide.WebDriverRunner
 import com.example.autotests.framework.SelenideConfig
 import org.testng.annotations.AfterMethod
@@ -13,6 +14,6 @@ open class BeforeAfterSuite {
 
     @AfterMethod(alwaysRun = true)
     fun tearDown() {
-        WebDriverRunner.closeWebDriver()
+        Selenide.closeWebDriver()
     }
 }

@@ -8,8 +8,6 @@ import com.google.inject.Injector
 object GuiceInjector {
     val injector: Injector by lazy {
         Guice.createInjector(
-            FrameworkModule(),
-            DatabaseModule()
-        )
+            FrameworkModule())
     }
 }

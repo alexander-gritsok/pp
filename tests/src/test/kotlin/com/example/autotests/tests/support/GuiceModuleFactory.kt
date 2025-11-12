@@ -9,8 +9,7 @@ import org.testng.ITestContext
 class GuiceModuleFactory : IModuleFactory {
     override fun createModule(context: ITestContext, testClass: Class<*>): Module {
         return com.google.inject.util.Modules.combine(
-            FrameworkModule(),
-            DatabaseModule()
+            FrameworkModule()
         )
     }
 }

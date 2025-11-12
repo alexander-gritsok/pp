@@ -1,0 +1,10 @@
+ebean:
+  test:
+    useDocker: false
+    platform: postgres # h2, postgres, mysql, ...
+    ddlMode: dropCreate # none | dropCreate | migration
+    dbName: develop
+    postgres:
+      username: postgres
+      password: postgres
+      url: jdbc:postgresql://localhost:5432/develop

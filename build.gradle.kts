@@ -1,6 +1,6 @@
 plugins {
     kotlin("jvm") version "2.0.20" apply false
-    id("io.ebean") version "14.5.0" apply false
+    id("io.ebean") version "17.1.0" apply false
 }
 
 allprojects {
