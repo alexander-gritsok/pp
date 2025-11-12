@@ -18,7 +18,7 @@ jobs:
         with:
           payload: |
             {
-              "text": ":bell: *New Pull Request!* :bell:\nRepository: <${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}>\nAuthor: *${{ github.actor }}*\nPR: <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }} - ${{ github.event.pull_request.title }}>"
+              "text": ":bell: <@U02E277G36K> *New Pull Request!* :bell:\nRepository: <${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}>\nAuthor: *${{ github.actor }}*\nPR: <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }} - ${{ github.event.pull_request.title }}>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -29,7 +29,7 @@ jobs:
         with:
           payload: |
             {
-              "text": ":rocket: <@Alexander Gritsok> <@U02E277G36K> *Changes merged to master!* :rocket:\nRepository: <${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}>\nPushed by: *${{ github.actor }}*\nCommit: <${{ github.event.head_commit.url }}|${{ github.event.head_commit.message }}>"
+              "text": ":rocket: <@U02E277G36K> *Changes merged to master!* :rocket:\nRepository: <${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}>\nPushed by: *${{ github.actor }}*\nCommit: <${{ github.event.head_commit.url }}|${{ github.event.head_commit.message }}>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
