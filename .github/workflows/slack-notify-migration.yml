@@ -29,7 +29,7 @@ jobs:
         with:
           payload: |
             {
-              "text": ":rocket: *Changes merged to master!* :rocket:\nRepository: <${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}>\nPushed by: *${{ github.actor }}*\nCommit: <${{ github.event.head_commit.url }}|${{ github.event.head_commit.message }}>"
+              "text": ":rocket: @Alexander Gritsok @<U02E277G36K>*Changes merged to master!* :rocket:\nRepository: <${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}>\nPushed by: *${{ github.actor }}*\nCommit: <${{ github.event.head_commit.url }}|${{ github.event.head_commit.message }}>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
