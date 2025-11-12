@@ -35,7 +35,7 @@ jobs:
               "blocks": [
                 {
                   "type": "header",
-                  "text": { "type": "plain_text", "text": "🛠️ New Pull Request Opened" }
+                  "text": { "type": "plain_text", "text": ":hammer_and_wrench: New Pull Request Opened" }
                 },
                 {
                   "type": "section",
@@ -50,7 +50,7 @@ jobs:
                   "elements": [
                     {
                       "type": "button",
-                      "text": { "type": "plain_text", "text": "👀 View PR" },
+                      "text": { "type": "plain_text", "text": ":eyes: View PR" },
                       "url": "${{ github.event.pull_request.html_url }}"
                     }
                   ]
@@ -69,7 +69,7 @@ jobs:
               "blocks": [
                 {
                   "type": "header",
-                  "text": { "type": "plain_text", "text": "🚀 Changes Merged to Master" }
+                  "text": { "type": "plain_text", "text": ":rocket: Changes Merged to Master" }
                 },
                 {
                   "type": "section",
@@ -91,7 +91,7 @@ jobs:
                   "elements": [
                     {
                       "type": "button",
-                      "text": { "type": "plain_text", "text": "🔍 View Diff" },
+                      "text": { "type": "plain_text", "text": ":mag: View Diff" },
                       "url": "${{ github.event.head_commit.url }}"
                     }
                   ]
