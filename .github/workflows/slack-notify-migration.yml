@@ -18,7 +18,7 @@ jobs:
         with:
           payload: |
             {
-              "text": ":bell: <@U02E277G36K> *New Pull Request!* :bell:\nRepository: <${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}>\nAuthor: *${{ github.actor }}*\nPR: <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }} - ${{ github.event.pull_request.title }}>"
+              "text": ":bell: <@U02E277G36K> *New Pull Request!!* :bell:\nRepository: <${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}>\nAuthor: *${{ github.actor }}*\nPR: <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }} - ${{ github.event.pull_request.title }}>"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
