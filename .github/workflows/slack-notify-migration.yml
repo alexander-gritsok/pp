@@ -11,11 +11,12 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Send notification to Slack
+      - name: Send Slack Notification
         uses: slackapi/slack-github-action@v1.27.0
         with:
           payload: >
             {
+              "text": "Repository update on GitHub – see details below.",
               "blocks": [
                 {
                   "type": "header",
