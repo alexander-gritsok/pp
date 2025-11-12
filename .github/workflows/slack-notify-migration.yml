@@ -1,4 +1,4 @@
-name: Notify Slack on PR and master merge
+name: Notify Slack on PR and master merge (via Webhook)
 
 on:
   pull_request:
@@ -12,24 +12,91 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Нужно только для push-событий, чтобы получить список файлов
+      - name: Checkout code
+        if: github.event_name == 'push'
+        uses: actions/checkout@v4
+
+      - name: Collect changed files (on push to master)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        id: changes
+        run: |
+          git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | head -n 5 > files.txt
+          echo "files<<EOF" >> $GITHUB_OUTPUT
+          cat files.txt | sed 's/^/- /' >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Notify on Pull Request
         if: github.event_name == 'pull_request'
         uses: slackapi/slack-github-action@v1.27.0
         with:
           payload: |
             {
-              "text": ":bell: <@U02E277G36K> *New Pull Request!* :bell:\nRepository: <${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}>\nAuthor: *${{ github.actor }}*\nPR: <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }} - ${{ github.event.pull_request.title }}>"
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": { "type": "plain_text", "text": "🛠️ New Pull Request Opened" }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    { "type": "mrkdwn", "text": "*Repository:*\n<${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}>" },
+                    { "type": "mrkdwn", "text": "*Author:*\n${{ github.actor }}" },
+                    { "type": "mrkdwn", "text": "*Title:*\n${{ github.event.pull_request.title }}" }
+                  ]
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": { "type": "plain_text", "text": "👀 View PR" },
+                      "url": "${{ github.event.pull_request.html_url }}"
+                    }
+                  ]
+                }
+              ]
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
-      - name: Notify on Merge to master
+      - name: Notify on Merge to master (with changed files)
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: slackapi/slack-github-action@v1.27.0
         with:
           payload: |
             {
-              "text": ":rocket: <@U02E277G36K> *Changes merged to master!* :rocket:\nRepository: <${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}>\nPushed by: *${{ github.actor }}*\nCommit: <${{ github.event.head_commit.url }}|${{ github.event.head_commit.message }}>"
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": { "type": "plain_text", "text": "🚀 Changes Merged to Master" }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    { "type": "mrkdwn", "text": "*Repository:*\n<${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}>" },
+                    { "type": "mrkdwn", "text": "*By:*\n${{ github.actor }}" },
+                    { "type": "mrkdwn", "text": "*Commit:*\n${{ github.event.head_commit.message }}" }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Changed files (up to 5):*\n${{ steps.changes.outputs.files }}"
+                  }
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": { "type": "plain_text", "text": "🔍 View Diff" },
+                      "url": "${{ github.event.head_commit.url }}"
+                    }
+                  ]
+                }
+              ]
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
