@@ -1,8 +1,8 @@
-name: Notify Slack on PR and master merge (via Webhook)
+name: Slack Notifications
 
 on:
   pull_request:
-    types: [opened, reopened, ready_for_review]
+    types: [opened, reopened, synchronize, closed]
   push:
     branches:
       - master
@@ -10,90 +10,41 @@ on:
 jobs:
   notify:
     runs-on: ubuntu-latest
-
     steps:
-      # Нужно только для push-событий, чтобы получить список файлов
-      - name: Checkout code
-        if: github.event_name == 'push'
-        uses: actions/checkout@v4
-
-      - name: Collect changed files (on push to master)
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-        id: changes
-        run: |
-          git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | head -n 5 > files.txt
-          echo "files<<EOF" >> $GITHUB_OUTPUT
-          cat files.txt | sed 's/^/- /' >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-
-      - name: Notify on Pull Request
-        if: github.event_name == 'pull_request'
+      - name: Send notification to Slack
         uses: slackapi/slack-github-action@v1.27.0
         with:
-          payload: |
+          payload: >
             {
               "blocks": [
                 {
                   "type": "header",
-                  "text": { "type": "plain_text", "text": ":hammer_and_wrench: New Pull Request Opened" }
+                  "text": { "type": "plain_text", "text": ":rocket: Repository Update", "emoji": true }
                 },
                 {
                   "type": "section",
                   "fields": [
-                    { "type": "mrkdwn", "text": "*Repository:*\n<${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}>" },
-                    { "type": "mrkdwn", "text": "*Author:*\n${{ github.actor }}" },
-                    { "type": "mrkdwn", "text": "*Title:*\n${{ github.event.pull_request.title }}" }
-                  ]
-                },
-                {
-                  "type": "actions",
-                  "elements": [
                     {
-                      "type": "button",
-                      "text": { "type": "plain_text", "text": ":eyes: View PR" },
-                      "url": "${{ github.event.pull_request.html_url }}"
+                      "type": "mrkdwn",
+                      "text": "*Repository:*\n<https://github.com/${{ github.repository }}|${{ github.repository }}>"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Actor:*\n${{ github.actor }}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Event:*\n${{ github.event_name }}"
                     }
                   ]
-                }
-              ]
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
-      - name: Notify on Merge to master (with changed files)
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-        uses: slackapi/slack-github-action@v1.27.0
-        with:
-          payload: |
-            {
-              "text": "Changes merged to master by ${{ github.actor }}",  # 👈 обязательное поле!
-              "blocks": [
-                {
-                  "type": "header",
-                  "text": { "type": "plain_text", "text": ":rocket: Changes Merged to Master" }
-                },
-                {
-                  "type": "section",
-                  "fields": [
-                    { "type": "mrkdwn", "text": "*Repository:*\n<${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}>" },
-                    { "type": "mrkdwn", "text": "*By:*\n${{ github.actor }}" },
-                    { "type": "mrkdwn", "text": "*Commit:*\n${{ github.event.head_commit.message }}" }
-                  ]
-                },
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "*Changed files (up to 5):*\n${{ steps.changes.outputs.files }}"
-                  }
                 },
                 {
                   "type": "actions",
                   "elements": [
                     {
                       "type": "button",
-                      "text": { "type": "plain_text", "text": ":mag: View Diff" },
-                      "url": "${{ github.event.head_commit.url }}"
+                      "text": { "type": "plain_text", "text": ":mag: View Diff", "emoji": true },
+                      "url": "${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
                     }
                   ]
                 }
