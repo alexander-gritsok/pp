@@ -20,7 +20,11 @@ jobs:
               "blocks": [
                 {
                   "type": "header",
-                  "text": { "type": "plain_text", "text": ":rocket: Repository Update", "emoji": true }
+                  "text": {
+                    "type": "plain_text",
+                    "text": ":rocket: Repository Update",
+                    "emoji": true
+                  }
                 },
                 {
                   "type": "section",
@@ -44,8 +48,12 @@ jobs:
                   "elements": [
                     {
                       "type": "button",
-                      "text": { "type": "plain_text", "text": ":mag: View Diff", "emoji": true },
-                      "url": "${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+                      "text": {
+                        "type": "plain_text",
+                        "text": ":mag: View Diff",
+                        "emoji": true
+                      },
+                      "url": "${{ github.event.pull_request.html_url != '' && github.event.pull_request.html_url || github.event.head_commit.url || 'https://github.com/${{ github.repository }}' }}"
                     }
                   ]
                 }
