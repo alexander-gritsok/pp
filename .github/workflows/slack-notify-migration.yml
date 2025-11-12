@@ -66,6 +66,7 @@ jobs:
         with:
           payload: |
             {
+              "text": "Changes merged to master by ${{ github.actor }}",  # 👈 обязательное поле!
               "blocks": [
                 {
                   "type": "header",
