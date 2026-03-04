@@ -1,6 +1,7 @@
 package com.example.autotests.tests.db
 
 import com.example.autotests.database.entities.DBAddress
+import com.example.autotests.database.entities.query.QDBAddress
 import com.example.autotests.tests.support.BeforeAfterSuite
 import io.ebean.DB
 import org.apache.logging.log4j.LogManager
@@ -12,9 +13,17 @@ class AddressSmokeTest : BeforeAfterSuite() {
     @Test
     fun firstAddress_hasNonBlankName_andIsLogged() {
         val logger = LogManager.getLogger(AddressSmokeTest::class.java)
-        val first = DB.find(DBAddress::class.java)
+        val first = QDBAddress()
             .findList()
         logger.info("List size: ${first.size}")
+
+        val tableNames = DB.sqlQuery(
+                "SELECT table_name FROM information_schema.tables " +
+                        "WHERE table_schema = 'public' AND table_type = 'BASE TABLE'")
+                .findList()
+                .map { it.getString("table_name") }
+        logger.info("Tables are: $tableNames")
+
 
         if (first.isEmpty()) {
             Assert.fail("Expected at least one record in addresses table")

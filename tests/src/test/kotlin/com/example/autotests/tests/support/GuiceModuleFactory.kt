@@ -1,6 +1,5 @@
 package com.example.autotests.tests.support
 
-import com.example.autotests.database.DatabaseModule
 import com.example.autotests.framework.FrameworkModule
 import com.google.inject.Module
 import org.testng.IModuleFactory
